@@ -35,10 +35,11 @@ def single_hand_dumbbell():
                 single_hand_combinations[total_weight] = full_combination
     
     # Sort the dictionary by total weight
-    # single_hand_combinations = dict(sorted(single_hand_combinations.items()))
-    # for total_weight, combination in single_hand_combinations.items():
-    #     print(f"{total_weight:.2f}: {combination}")
+    single_hand_combinations = dict(sorted(single_hand_combinations.items()))
 
+    # Print combinations
+    for total_weight, combination in single_hand_combinations.items():
+        print(f"{total_weight:.2f}: {combination}")
     # Write combinations to file
     with open('single_hand_combinations.txt', 'w') as f:
         for total_weight, combination in single_hand_combinations.items():
