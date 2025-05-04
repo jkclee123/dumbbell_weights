@@ -40,9 +40,9 @@ def single_hand_dumbbell():
     #     print(f"{total_weight:.2f}: {combination}")
 
     # Write combinations to file
-    # with open('single_hand_combinations.txt', 'w') as f:
-    #     for total_weight, combination in single_hand_combinations.items():
-    #         f.write(f"{total_weight:.2f}: {combination}\n")
+    with open('single_hand_combinations.txt', 'w') as f:
+        for total_weight, combination in single_hand_combinations.items():
+            f.write(f"{total_weight:.2f}: {combination}\n")
 
 
 def two_hand_dumbbell():
@@ -97,10 +97,7 @@ def two_hand_dumbbell():
     # Write combinations to file
     with open('two_hand_combinations.txt', 'w') as f:
         for single_weight, (left, right) in two_hand_combinations.items():
-            left_weight = left[0] + sum(PLATES[label] for label in left[1:])
-            right_weight = right[0] + sum(PLATES[label] for label in right[1:])
-            f.write(f"{single_weight:.2f}: {left} | {right}")
-
+            f.write(f"{single_weight:.2f}: {left} | {right}\n")
 
 if __name__ == "__main__":
     main()
