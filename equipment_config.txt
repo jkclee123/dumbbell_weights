@@ -1,0 +1,18 @@
+# Dumbbell Equipment Configuration
+# All weights are in kilograms (kg)
+
+[BARS]
+# Bar weight
+2.60 kg
+2.72 kg
+
+[PLATES]
+# Plate labelled weight and their actual weights
+0.60 kg: 1.13 kg
+0.75 kg: 1.16 kg
+0.95 kg: 1.82 kg
+1.20 kg: 2.43 kg
+1.25 kg: 1.76 kg
+1.50 kg: 3.09 kg
+1.75 kg: 2.53 kg
+2.25 kg: 3.10 kg

@@ -1,20 +1,111 @@
 from itertools import combinations
 import math
 
-BARS = [2.6, 2.72]
-PLATES = {
-    0.6: 1.13,
-    0.75: 1.16,
-    0.95: 1.82,
-    1.2: 2.43,
-    1.25: 1.76,
-    1.5: 3.09,
-    1.75: 2.53,
-    2.25: 3.1
-}
+def load_equipment_config(config_file="equipment_config.txt"):
+    """
+    Load dumbbell equipment configuration from a text file.
+
+    Returns:
+        tuple: (bars_list, plates_dict)
+            bars_list: List of bar weights in kg
+            plates_dict: Dict of labeled_weight_kg: actual_weight_kg
+    """
+    bars = []
+    plates = {}
+
+    try:
+        with open(config_file, 'r') as f:
+            current_section = None
+            for line in f:
+                line = line.strip()
+
+                # Skip comments and empty lines
+                if not line or line.startswith('#'):
+                    continue
+
+                # Section headers
+                if line == '[BARS]':
+                    current_section = 'bars'
+                    continue
+                elif line == '[PLATES]':
+                    current_section = 'plates'
+                    continue
+
+                # Parse data based on current section
+                if current_section == 'bars':
+                    # Extract weight from "X.XX kg" format
+                    if 'kg' in line:
+                        weight_str = line.split()[0]
+                        try:
+                            bars.append(float(weight_str))
+                        except ValueError:
+                            print(f"Warning: Could not parse bar weight: {line}")
+
+                elif current_section == 'plates':
+                    # Extract labeled weight and actual weight from "X.XX kg: Y.YY kg" format
+                    if ':' in line and 'kg' in line:
+                        try:
+                            labeled_part, actual_part = line.split(':')
+                            labeled_weight = float(labeled_part.split()[0])
+                            actual_weight = float(actual_part.split()[0])
+                            plates[labeled_weight] = actual_weight
+                        except (ValueError, IndexError):
+                            print(f"Warning: Could not parse plate data: {line}")
+
+    except FileNotFoundError:
+        print(f"Error: Configuration file '{config_file}' not found.")
+        return [], {}
+
+    return bars, plates
+
+# Load configuration
+BARS, PLATES = load_equipment_config()
 
 def main():
+    one_hand_dumbbell()
     two_hand_dumbbell()
+
+def one_hand_dumbbell():
+    """
+    Generate all possible one-hand dumbbell combinations where:
+    - Uses one bar
+    - Uses at most 3 plates
+    - For the same weight, uses the combination with the least plates
+    Output is printed and written to 'one_hand_combinations.txt' in a readable format.
+    """
+    plate_labels = list(PLATES.keys())
+    one_hand_combinations = {}
+
+    bar = BARS[0]  # Use the first bar
+
+    # Iterate over all possible plate combinations (0 to 3 plates)
+    for r in range(0, 4):
+        for combination in combinations(plate_labels, r):
+            plate_weight = sum(PLATES[label] for label in combination)
+            total_weight = round(bar + plate_weight, 2)
+
+            # Create the full combination tuple (bar + plates)
+            full_combination = (bar,) + combination
+
+            # If this weight already exists, keep the one with fewer plates
+            # If same number of plates, keep any (they should be equivalent)
+            if total_weight not in one_hand_combinations or len(combination) < len(one_hand_combinations[total_weight][1:]):
+                one_hand_combinations[total_weight] = full_combination
+
+    # Sort by total weight
+    one_hand_combinations = dict(sorted(one_hand_combinations.items()))
+
+    # Print combinations (optional, for debug)
+    for weight, combination in one_hand_combinations.items():
+        print(f"{weight:.2f}kg:")
+        print(", ".join(str(x) for x in combination))
+        print()
+
+    # Write combinations to file in the requested format
+    with open('one_hand_combinations.txt', 'w') as f:
+        for weight, combination in one_hand_combinations.items():
+            f.write(f"{weight:.2f}kg:\n")
+            f.write(", ".join(str(x) for x in combination) + "\n\n")
 
 def two_hand_dumbbell():
     """
@@ -54,7 +145,7 @@ def two_hand_dumbbell():
 
     # Print combinations (optional, for debug)
     for single_weight, (left, right) in two_hand_combinations.items():
-        print(f"{single_weight:.2f}:")
+        print(f"{single_weight:.2f}kg:")
         print(", ".join(str(x) for x in left))
         print(", ".join(str(x) for x in right))
         print()
@@ -62,7 +153,7 @@ def two_hand_dumbbell():
     # Write combinations to file in the requested format
     with open('two_hand_combinations.txt', 'w') as f:
         for single_weight, (left, right) in two_hand_combinations.items():
-            f.write(f"{single_weight:.2f}:\n")
+            f.write(f"{single_weight:.2f}kg:\n")
             f.write(", ".join(str(x) for x in left) + "\n")
             f.write(", ".join(str(x) for x in right) + "\n\n")
 
