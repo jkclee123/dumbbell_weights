@@ -62,19 +62,19 @@ def load_equipment_config(config_file="equipment_config.txt"):
 BARS, PLATES = load_equipment_config()
 
 def main():
-    one_hand_dumbbell()
+    single_hand_dumbbell()
     two_hand_dumbbell()
 
-def one_hand_dumbbell():
+def single_hand_dumbbell():
     """
-    Generate all possible one-hand dumbbell combinations where:
+    Generate all possible single-hand dumbbell combinations where:
     - Uses one bar
     - Uses at most 3 plates
     - For the same weight, uses the combination with the least plates
-    Output is printed and written to 'one_hand_combinations.txt' in a readable format.
+    Output is printed and written to 'single_hand_combinations.txt' in a readable format.
     """
     plate_labels = list(PLATES.keys())
-    one_hand_combinations = {}
+    single_hand_combinations = {}
 
     bar = BARS[0]  # Use the first bar
 
@@ -89,21 +89,21 @@ def one_hand_dumbbell():
 
             # If this weight already exists, keep the one with fewer plates
             # If same number of plates, keep any (they should be equivalent)
-            if total_weight not in one_hand_combinations or len(combination) < len(one_hand_combinations[total_weight][1:]):
-                one_hand_combinations[total_weight] = full_combination
+            if total_weight not in single_hand_combinations or len(combination) < len(single_hand_combinations[total_weight][1:]):
+                single_hand_combinations[total_weight] = full_combination
 
     # Sort by total weight
-    one_hand_combinations = dict(sorted(one_hand_combinations.items()))
+    single_hand_combinations = dict(sorted(single_hand_combinations.items()))
 
     # Print combinations (optional, for debug)
-    for weight, combination in one_hand_combinations.items():
+    for weight, combination in single_hand_combinations.items():
         print(f"{weight:.2f}kg:")
         print(", ".join(str(x) for x in combination))
         print()
 
     # Write combinations to file in the requested format
-    with open('one_hand_combinations.txt', 'w') as f:
-        for weight, combination in one_hand_combinations.items():
+    with open('single_hand_combinations.txt', 'w') as f:
+        for weight, combination in single_hand_combinations.items():
             f.write(f"{weight:.2f}kg:\n")
             f.write(", ".join(str(x) for x in combination) + "\n\n")
 

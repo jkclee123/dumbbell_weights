@@ -1,14 +1,23 @@
 # Dumbbell Weights Combinatorics Tool
 
-A Python command-line tool that generates all possible dumbbell weight combinations using your available bars and plates. Perfect for athletes, trainers, and gym owners who want to maximize their equipment's potential.
+A Python command-line tool that generates all possible dumbbell weight combinations using your available bars and plates. 
+**For equipment where labelled weights don't match actual weights** - a common issue with budget or older dumbbell sets.
 
 ## Features
 
-- **One-Hand Dumbbells**: Calculate all possible weights using one bar with up to 3 plates
+- **Single-Hand Dumbbells**: Calculate all possible weights using one bar with up to 3 plates
 - **Two-Hand Dumbbells**: Generate balanced pairs where each dumbbell uses different bars and plates
 - **Flexible Configuration**: Easy-to-edit text file for your equipment setup
 - **Optimized Combinations**: Prioritizes combinations with fewer plates for the same weight
 - **Readable Output**: Clean text files showing weight combinations for easy reference
+
+## The Labelled Weight Problem
+
+Many dumbbell sets (especially budget or older equipment) have plates where the **labelled weight** (what the plate says it is) doesn't match the **actual weight** (what it really weighs). For example:
+- A plate marked "0.60 kg" might actually weigh 1.13 kg
+- A plate marked "1.25 kg" might actually weigh 1.76 kg
+
+This tool accounts for both weights, so you know exactly what combinations will give you your target weight. No more guesswork or inconsistent results during workouts!
 
 ## Quick Start
 
@@ -63,13 +72,13 @@ Edit `equipment_config.txt` to match your dumbbell equipment:
 - **Bars**: List all your dumbbell bars with their weights
 - **Plates**: Each plate has a labeled weight (what you think you're using) and actual weight (what it really weighs)
 - **Constraints**:
-  - One-hand: 1 bar + up to 3 plates
+  - Single-hand: 1 bar + up to 3 plates
   - Two-hand: 2 different bars + up to 3 plates each, plates not shared between hands
   - Two-hand combinations must be balanced within 0.01 kg
 
 ## Output Format
 
-### One-Hand Combinations
+### Single-Hand Combinations
 ```
 3.73:
 2.6, 0.6
@@ -91,10 +100,11 @@ Shows the single dumbbell weight, then the combination for each hand.
 
 ## Example Use Cases
 
-- **Workout Planning**: Know exactly what weights you can achieve
-- **Equipment Shopping**: Identify gaps in your weight range
-- **Gym Setup**: Help clients understand available options
-- **Training Logs**: Reference exact plate combinations used
+- **Accurate Weight Calculation**: Know your exact achievable weights when labelled weights are misleading
+- **Workout Planning**: Plan sessions with confidence using real weights, not advertised ones
+- **Equipment Assessment**: Discover what your current setup can actually achieve
+- **Equipment Shopping**: Identify weight gaps and avoid buying plates that won't help
+- **Training Logs**: Record exact plate combinations used for reproducible workouts
 
 ## Technical Details
 
